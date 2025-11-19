@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The AAC Eligibility Game: Can You Get Specialist Referral?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .game-container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        h1 {
+            color: #FF00FF;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        h2 {
+            color: #FF00FF;
+            margin: 20px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        h3 {
+            color: #333;
+            margin: 15px 0 10px 0;
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        .about-section {
+            background: #f5f5f5;
+            border-left: 4px solid #FF00FF;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .about-section h3 {
+            color: #FF00FF;
+            margin-top: 0;
+        }
+
+        .about-section p {
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .character-card {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .character-card:hover {
+            border-color: #FF00FF;
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .character-card h3 {
+            color: #FF00FF;
+            margin: 10px 0;
+        }
+
+        .character-card p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        button {
+            background: #FF00FF;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #DD00DD;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .eligibility-meter {
+            width: 100%;
+            height: 30px;
+            background: #ddd;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 2px solid #999;
+        }
+
+        .eligibility-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FF0000 0%, #FF6600 40%, #FFFF00 60%, #00DD00 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .dialogue-box {
+            background: #f5f5f5;
+            border-left: 4px solid #FF00FF;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .speaker {
+            font-weight: bold;
+            color: #FF00FF;
+            margin-bottom: 5px;
+        }
+
+        .question-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #FF00FF;
+        }
+
+        .question-section h3 {
+            color: #FF00FF;
+            margin-top: 0;
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .mini-game-container {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed #FF00FF;
+        }
+
+        .video-option {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-option:hover {
+            border-color: #FF00FF;
+            background: #fff5ff;
+        }
+
+        .video-option input {
+            margin-right: 10px;
+        }
+
+        .image-display {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-display img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .final-message {
+            background: #fff5ff;
+            border: 2px solid #FF00FF;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .final-message h2 {
+            margin-top: 0;
+        }
+
+        .urgent-note {
+            background: #ffe6e6;
+            border-left: 4px solid #FF0000;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .urgent-note strong {
+            color: #FF0000;
+        }
+
+        .footer-info {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #FF00FF;
+        }
+
+        .footer-info a {
+            color: #FF00FF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-info a:hover {
+            text-decoration: underline;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FF00FF;
+            opacity: 1;
+        }
+
+        .hoop-section {
+            background: #fff5ff;
+            border: 2px dashed #FF00FF;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            border: 2px solid #FF0000;
+            color: #CC0000;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .timer {
+            font-weight: bold;
+            color: #FF00FF;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .target-click {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #FF00FF;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .target-click:hover {
+            transform: scale(1.1);
+            background: #DD00DD;
+        }
+
+        .targets-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #FF00FF;
+            margin: 20px 0;
+            min-height: 200px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .character-grid {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Title Screen -->
+        <div id="titleScreen" class="screen active">
+            <h1>🎮 The AAC Eligibility Game</h1>
+            <h2 style="text-align: center; margin-bottom: 30px;">Can You Get Specialist Referral?</h2>
+
+            <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">
+                <strong>Welcome to the AAC Eligibility Game, where the points are made up and the barriers are real.</strong>
+            </p>
+
+            <p style="text-align: center; margin-bottom: 30px;">
+                In this game, you'll navigate the NHS England AAC Decision Chart – the same form speech and language therapists actually use to decide if people deserve specialist communication equipment.
+            </p>
+
+            <div class="image-display">
+                <img src="images/kate_and_tristan_cartoon_transparent_background.png" alt="Kate Caryer and Tristán White" style="max-width: 300px;">
+            </div>
+
+            <div class="about-section">
+                <h3>About This Game</h3>
+                <p>This game promotes <strong>"The Power of Unspoken Voices"</strong> – a future documentary about AAC in the UK created by Kate Caryer (AAC user with athetoid cerebral palsy) and Tristán White (videographer with a 35-year interest in AAC and accessibility).</p>
+            </div>
+
+            <p style="text-align: center; margin: 30px 0;">
+                You can play as one of <strong>seven perspectives</strong>. Six people trying to get referred to a specialist AAC service. Or Miss Smith, the speech and language therapist trying to apply the system.
+            </p>
+
+            <p style="text-align: center; color: #FF0000; font-weight: bold; margin-bottom: 30px;">
+                ⚠️ Fair warning: most will fail. The system is stacked against them. Want to see why? Pick your perspective.
+            </p>
+
+            <div style="text-align: center;">
+                <button onclick="showScreen('characterScreen')">Start Game</button>
+            </div>
+        </div>
+
+        <!-- Character Selection Screen -->
+        <div id="characterScreen" class="screen">
+            <h1>Select Your Perspective</h1>
+            <p style="text-align: center; margin-bottom: 30px;">Choose one of seven perspectives to experience the NHS AAC eligibility assessment system:</p>
+
+            <div class="character-grid">
+                <div class="character-card" onclick="startGame('mia')">
+                    <h3>Mia</h3>
+                    <p><strong>8 years old</strong><br>Athetoid Cerebral Palsy<br>Uses a picture board<br>Mum translates her gestures</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('james')">
+                    <h3>James</h3>
+                    <p><strong>30 years old</strong><br>Motor Neurone Disease<br>Uses an alphabet board<br>Wife helps spell messages<br>⏰ Time is running out</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('robert')">
+                    <h3>Robert</h3>
+                    <p><strong>65 years old</strong><br>Stroke survivor (3 months ago)<br>Expressive aphasia<br>Daughter trying to advocate</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('aisha')">
+                    <h3>Aisha</h3>
+                    <p><strong>25 years old</strong><br>Autism + Intellectual Disability<br>Non-verbal<br>No AAC ever offered</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('kwame')">
+                    <h3>Kwame</h3>
+                    <p><strong>19 years old</strong><br>Severe Cerebral Palsy<br>Device broken 8 months ago<br>Still waiting for replacement</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('mrs_chen')">
+                    <h3>Mrs. Chen</h3>
+                    <p><strong>72 years old</strong><br>Severe dysarthria<br>Speaks Cantonese at home<br>No bilingual SLT available</p>
+                </div>
+
+                <div class="character-card" onclick="startGame('miss_smith')">
+                    <h3>Miss Smith</h3>
+                    <p><strong>Speech and Language Therapist</strong><br>45 years old<br>Tired, overworked<br>Frustrated by the system</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showScreen('titleScreen')">← Back</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <h1 id="gameTitle">Assessment in Progress</h1>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span id="characterNameDisplay" style="font-size: 1.2em; color: #FF00FF; font-weight: bold;"></span>
+            </div>
+
+            <div class="hoop-section">
+                🎯 <strong>First obstacle:</strong> The metaphorical hoop. Jump through enough hoops, and you might just get help...
+            </div>
+
+            <div class="image-display">
+                <img src="images/2025_NHS_Decision_Chart_AAC.png" alt="NHS AAC Decision Chart 2025" style="max-width: 150px; opacity: 0.7;">
+                <p style="font-size: 0.8em; color: #666;">NHS Decision Chart reference</p>
+            </div>
+
+            <div class="eligibility-meter">
+                <div class="eligibility-bar" id="eligibilityBar"></div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-weight: bold; color: #FF00FF; font-size: 1.1em;" id="eligibilityPercentage">0%</span>
+                <span id="eligibilityStatus" style="margin-left: 20px; font-weight: bold;"></span>
+            </div>
+
+            <div id="gameContent"></div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="nextButton" onclick="nextQuestion()" style="display: none;">Next Question →</button>
+                <button id="finishButton" onclick="finishAssessment()" style="display: none;">Finish Assessment</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <h1 id="resultsTitle">Assessment Complete</h1>
+
+            <div class="eligibility-meter">
+                <div class="eligibility-bar" id="finalEligibilityBar"></div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-weight: bold; color: #FF00FF; font-size: 1.2em;" id="finalEligibilityPercentage">0%</span>
+            </div>
+
+            <div id="resultsContent"></div>
+
+            <div class="image-display">
+                <img src="images/logo-nhs.png" alt="NHS Logo" style="max-width: 100px; opacity: 0.6; margin: 20px 0;">
+            </div>
+
+            <div class="footer-info">
+                <h3>💡 Learn More</h3>
+                <p>This game is based on real barriers faced by AAC users in the UK healthcare system.</p>
+                <p><strong>"The Power of Unspoken Voices"</strong> documentary will explore these issues in depth.</p>
+                <p>Visit <a href="https://www.unspokenvoices.co.uk" target="_blank">www.unspokenvoices.co.uk</a> to find out more or help us with our project.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showScreen('characterScreen')">← Choose Another Character</button>
+                <button onclick="showScreen('titleScreen')">← Back to Title</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const game = {
+            currentCharacter: null,
+            eligibility: 0,
+            currentQuestion: 0,
+            answers: [],
+            assessmentComplete: false,
+            isSLTMode: false,
+            characterData: {
+                mia: {
+                    name: 'Mia',
+                    age: 8,
+                    condition: 'Athetoid Cerebral Palsy',
+                    startEligibility: 90,
+                    assistant: 'Mother',
+                    canSpeak: false,
+                    notes: 'Young, cheerful despite barriers'
+                },
+                james: {
+                    name: 'James',
+                    age: 30,
+                    condition: 'Motor Neurone Disease',
+                    startEligibility: 100,
+                    assistant: 'Wife',
+                    canSpeak: false,
+                    notes: 'Rapidly degenerative - time critical',
+                    hasAlphabetMinigame: true
+                },
+                robert: {
+                    name: 'Robert',
+                    age: 65,
+                    condition: 'Stroke survivor',
+                    startEligibility: 70,
+                    assistant: 'Daughter',
+                    canSpeak: true,
+                    notes: 'Limited speech due to expressive aphasia'
+                },
+                aisha: {
+                    name: 'Aisha',
+                    age: 25,
+                    condition: 'Autism + Intellectual Disability',
+                    startEligibility: 60,
+                    assistant: 'Mother',
+                    canSpeak: false,
+                    notes: 'Never been offered any AAC'
+                },
+                kwame: {
+                    name: 'Kwame',
+                    age: 19,
+                    condition: 'Severe Cerebral Palsy',
+                    startEligibility: 95,
+                    assistant: 'Father',
+                    canSpeak: false,
+                    notes: 'Device broken for 8 months'
+                },
+                mrs_chen: {
+                    name: 'Mrs. Chen',
+                    age: 72,
+                    condition: 'Severe dysarthria',
+                    startEligibility: 45,
+                    assistant: 'Son',
+                    canSpeak: false,
+                    notes: 'Fluent in Cantonese, minimal English',
+                    hasTranslationDialogue: true
+                },
+                miss_smith: {
+                    name: 'Miss Smith',
+                    age: 45,
+                    condition: 'Speech and Language Therapist',
+                    startEligibility: null,
+                    assistant: null,
+                    notes: 'SLT mode - different gameplay'
+                }
+            },
+
+            questions: [
+                {
+                    text: 'Do you understand cause and effect? For example, if I press this button, the light comes on. Do you understand what happens?',
+                    outcomes: {
+                        pass: { points: 10, message: 'Demonstrates understanding' },
+                        fail: { points: -15, message: 'Cannot demonstrate understanding' }
+                    }
+                },
+                {
+                    text: 'Do you understand what a communication device is for? Can you show me that you want to communicate?',
+                    outcomes: {
+                        pass: { points: 10, message: 'Clear communication intention' },
+                        fail: { points: -20, message: 'Cannot demonstrate understanding (Catch-22 moment)' }
+                    }
+                },
+                {
+                    text: 'I need video evidence showing a clear gap between your understanding and your ability to speak or communicate clearly. Do you have recent videos?',
+                    minigame: 'videoHunt',
+                    outcomes: {
+                        pass: { points: 15, message: 'Found good evidence' },
+                        partial: { points: 5, message: 'Some evidence, but not clinical' },
+                        fail: { points: -20, message: 'No suitable videos available' }
+                    }
+                },
+                {
+                    text: 'Have you tried low-technology AAC strategies? I need documentation showing why they are insufficient.',
+                    outcomes: {
+                        pass: { points: 15, message: 'Low-tech proven inadequate' },
+                        fail: { points: -15, message: 'No documented low-tech trials' }
+                    }
+                },
+                {
+                    text: 'How complex are your communication and language needs?',
+                    minigame: 'alphabetSpelling',
+                    outcomes: {
+                        pathway_a: { points: 5, message: 'Single-concept communication' },
+                        pathway_b: { points: 10, message: 'Multi-concept symbol use' },
+                        pathway_c: { points: 10, message: 'Literate user - can spell' }
+                    }
+                },
+                {
+                    text: 'Can you use a touchscreen or keyboard with sufficient speed and endurance?',
+                    minigame: 'touchscreen',
+                    outcomes: {
+                        pass: { points: 20, message: 'Cannot access touchscreen - needs specialist access method' },
+                        fail: { points: -30, message: 'Can use touchscreen - local services should help' }
+                    }
+                },
+                {
+                    text: 'Do you have a dedicated support team or advocate who understands your communication needs?',
+                    outcomes: {
+                        strong: { points: 15, message: 'Strong support team in place' },
+                        adequate: { points: 5, message: 'Some support available' },
+                        weak: { points: -10, message: 'Limited support' },
+                        none: { points: -25, message: 'No professional support or advocacy' }
+                    }
+                }
+            ]
+        };
+
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenName).classList.add('active');
+        }
+
+        function startGame(character) {
+            game.currentCharacter = character;
+            game.isSLTMode = (character === 'miss_smith');
+            game.eligibility = game.characterData[character].startEligibility || 0;
+            game.currentQuestion = 0;
+            game.answers = [];
+            game.assessmentComplete = false;
+
+            document.getElementById('gameTitle').textContent = `Assessment: ${game.characterData[character].name}`;
+            document.getElementById('characterNameDisplay').textContent = 
+                `Playing as: ${game.characterData[character].name} (${game.characterData[character].age} years old)`;
+
+            showQuestion();
+            showScreen('gameScreen');
+        }
+
+        function showQuestion() {
+            if (game.currentQuestion >= game.questions.length) {
+                finishAssessment();
+                return;
+            }
+
+            const question = game.questions[game.currentQuestion];
+            let html = `
+                <div class="question-section">
+                    <h3>Question ${game.currentQuestion + 1} of ${game.questions.length}</h3>
+                    <p><strong>Miss Smith:</strong> "${question.text}"</p>
+            `;
+
+            if (game.characterData[game.currentCharacter].assistant && !game.isSLTMode) {
+                if (game.characterData[game.currentCharacter].hasTranslationDialogue && game.currentQuestion === 6) {
+                    html += `
+                        <div style="background: #fff5e6; border-left: 4px solid #FF9900; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                            <p><strong>Mrs. Chen:</strong> <span style="font-style: italic; color: #666;">[translate:我想告訴你我愛你們]</span> (Cantonese: "I want to tell you I love you")</p>
+                            <p><strong>Son:</strong> "Uh... my mother says... she wants... food? No wait, she wants to... talk? I'm trying to help but I'm not trained in this. I speak English at work, she speaks Cantonese at home. It's very difficult..."</p>
+                            <p><strong>Miss Smith (sighs):</strong> "We really need a bilingual speech and language therapist, but we don't have one available in this area. This is where the system completely fails."</p>
+                        </div>
+                    `;
+                } else {
+                    html += `<p><strong>${game.characterData[game.currentCharacter].assistant}:</strong> "Let me help explain..."</p>`;
+                }
+            }
+
+            if (question.minigame === 'videoHunt') {
+                html += `
+                    <div class="mini-game-container">
+                        <h4>🎥 Video Evidence Hunt (60 seconds)</h4>
+                        <p>Search through videos to find ones showing the communication gap:</p>
+                        <div class="timer"><span id="timer">60</span>s remaining</div>
+                        <div id="videoOptions"></div>
+                        <button onclick="completeVideoHunt()">Submit Evidence</button>
+                    </div>
+                `;
+            } else if (question.minigame === 'touchscreen') {
+                html += `
+                    <div class="mini-game-container">
+                        <h4>📱 Touchscreen Access Test (30 seconds)</h4>
+                        <p>Try to click as many targets as you can:</p>
+                        <div class="timer"><span id="timer">30</span>s remaining</div>
+                        <div class="targets-container" id="targetsContainer"></div>
+                        <div style="text-align: center; margin: 10px 0;">
+                            <strong>Targets tapped: <span id="targetsHit">0</span>/10</strong>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div style="margin-top: 20px;">
+                    <h4>Choose response:</h4>
+                    <div id="responseButtons"></div>
+                </div>
+                </div>
+            `;
+
+            document.getElementById('gameContent').innerHTML = html;
+            document.getElementById('nextButton').style.display = 'none';
+            document.getElementById('finishButton').style.display = 'none';
+
+            if (question.minigame === 'videoHunt') {
+                initializeVideoHunt();
+            } else if (question.minigame === 'touchscreen') {
+                initializeTouchscreen();
+            } else if (question.minigame === 'alphabetSpelling' && game.characterData[game.currentCharacter].hasAlphabetMinigame) {
+                initializeAlphabetSpelling();
+            } else {
+                populateResponseButtons(question);
+            }
+        }
+
+        function populateResponseButtons(question) {
+            const responseDiv = document.getElementById('responseButtons');
+            const outcomes = question.outcomes;
+            let buttonsHtml = '';
+
+            for (const [key, value] of Object.entries(outcomes)) {
+                let buttonLabel = '';
+                switch(key) {
+                    case 'pass': buttonLabel = '✓ Yes'; break;
+                    case 'fail': buttonLabel = '✗ No'; break;
+                    case 'pathway_a': buttonLabel = 'Pathway A: Single concepts'; break;
+                    case 'pathway_b': buttonLabel = 'Pathway B: Multi-concept symbols'; break;
+                    case 'pathway_c': buttonLabel = 'Pathway C: Literate/can spell'; break;
+                    case 'strong': buttonLabel = '✓ Strong support'; break;
+                    case 'adequate': buttonLabel = '◐ Adequate support'; break;
+                    case 'weak': buttonLabel = '✗ Limited support'; break;
+                    case 'none': buttonLabel = '✗ No support'; break;
+                }
+
+                buttonsHtml += `
+                    <button onclick="answerQuestion('${key}', ${value.points}, '${value.message}')">
+                        ${buttonLabel}
+                    </button>
+                `;
+            }
+
+            responseDiv.innerHTML = buttonsHtml;
+        }
+
+        function answerQuestion(answer, points, message) {
+            // Disable all response buttons to prevent multiple submissions
+            const allButtons = document.querySelectorAll('#responseButtons button');
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
+
+            game.eligibility += points;
+            game.answers.push({ question: game.currentQuestion, answer, points, message });
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = points >= 0 ? '' : 'error-message';
+            messageDiv.style.background = points >= 0 ? '#e6ffe6' : '#ffe6e6';
+            messageDiv.style.borderLeft = `4px solid ${points >= 0 ? '#00DD00' : '#FF0000'}`;
+            messageDiv.style.padding = '15px';
+            messageDiv.style.borderRadius = '5px';
+            messageDiv.style.margin = '15px 0';
+            messageDiv.innerHTML = `<strong>${points >= 0 ? '✓' : '✗'} ${message}</strong><br><span style="color: #666;">Eligibility: ${points >= 0 ? '+' : ''}${points}</span>`;
+
+            document.getElementById('gameContent').appendChild(messageDiv);
+
+            setTimeout(() => {
+                game.currentQuestion++;
+                document.getElementById('nextButton').style.display = 'inline-block';
+                document.getElementById('nextButton').textContent = 
+                    game.currentQuestion >= game.questions.length ? 'Finish Assessment →' : 'Next Question →';
+                document.getElementById('nextButton').onclick = 
+                    game.currentQuestion >= game.questions.length ? finishAssessment : nextQuestion;
+            }, 1500);
+
+            updateEligibilityMeter();
+        }
+
+        function initializeVideoHunt() {
+            const videos = [
+                { title: 'Birthday Party', clinical: false },
+                { title: 'Family Dinner', clinical: true },
+                { title: 'Holiday Video', clinical: false },
+                { title: 'Home Communication', clinical: true },
+                { title: 'Medical Appointment', clinical: false }
+            ];
+
+            let html = '';
+            videos.forEach((video, index) => {
+                html += `
+                    <div class="video-option">
+                        <input type="checkbox" id="video${index}" value="${index}" data-clinical="${video.clinical}">
+                        <label for="video${index}" style="cursor: pointer; margin-left: 5px;">
+                            <strong>${video.title}</strong> ${video.clinical ? '📋' : '🎬'}
+                        </label>
+                    </div>
+                `;
+            });
+
+            document.getElementById('videoOptions').innerHTML = html;
+
+            game.videoHuntTimer = setInterval(() => {
+                let timeLeft = parseInt(document.getElementById('timer').textContent);
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(game.videoHuntTimer);
+                    completeVideoHunt();
+                }
+            }, 1000);
+        }
+
+        function completeVideoHunt() {
+            // Stop timer
+            if (game.videoHuntTimer) {
+                clearInterval(game.videoHuntTimer);
+            }
+
+            // Disable submit button and checkboxes
+            const submitBtn = event.target;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+            }
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = true);
+
+            // Count ONLY clinical videos
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+            let clinicalCount = 0;
+            checked.forEach(cb => {
+                if (cb.dataset.clinical === 'true') clinicalCount++;
+            });
+
+            let points, message;
+            if (clinicalCount >= 2) {
+                points = 15;
+                message = 'Found good clinical evidence (2+ clinical videos)';
+            } else if (clinicalCount === 1) {
+                points = 5;
+                message = 'Some evidence, but insufficient (only 1 clinical video)';
+            } else {
+                points = -20;
+                message = 'No suitable clinical videos found';
+            }
+
+            answerQuestion('videoHunt', points, message);
+        }
+
+        function initializeAlphabetSpelling() {
+            const targetWord = ['H', 'E', 'L', 'P'];
+            let foundLetters = [];
+            let timeLeft = 45;
+
+            let html = '<div style="text-align: center; margin: 20px 0;">';
+            html += '<h4>👁️ Eye-Gaze Alphabet Board</h4>';
+            html += '<p><strong>Narrator:</strong> James has his wife and some SLT involvement. He uses eye-gaze on an alphabet board to spell messages letter by letter.</p>';
+            html += '<p style="font-style: italic; color: #666;">Click letters as they appear to spell "HELP":</p>';
+            html += `<div class="timer"><span id="timer">${timeLeft}</span>s remaining</div>`;
+            html += '<div style="margin: 20px 0; font-size: 2em; letter-spacing: 10px; color: #FF00FF; min-height: 60px;" id="spelledWord"></div>';
+            html += '<div id="alphabetBoard" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 400px; margin: 20px auto; position: relative; height: 200px;"></div>';
+            html += '</div>';
+
+            document.getElementById('responseButtons').parentElement.innerHTML = html;
+
+            game.foundLetters = [];
+            game.currentLetterIndex = 0;
+
+            function showRandomLetter() {
+                if (game.foundLetters.length >= targetWord.length) {
+                    clearInterval(game.alphabetTimer);
+                    clearInterval(game.letterInterval);
+                    setTimeout(() => {
+                        answerQuestion('pathway_c', 10, 'Literate user - can spell (successfully spelled "HELP" with eye-gaze)');
+                    }, 500);
+                    return;
+                }
+
+                const board = document.getElementById('alphabetBoard');
+                board.innerHTML = '';
+
+                const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+                const targetLetter = targetWord[game.foundLetters.length];
+                
+                // Show 8-10 random letters including the target
+                const lettersToShow = [];
+                lettersToShow.push(targetLetter);
+                
+                while (lettersToShow.length < 9) {
+                    const randomLetter = allLetters[Math.floor(Math.random() * allLetters.length)];
+                    if (!lettersToShow.includes(randomLetter)) {
+                        lettersToShow.push(randomLetter);
+                    }
+                }
+
+                // Shuffle
+                lettersToShow.sort(() => Math.random() - 0.5);
+
+                lettersToShow.forEach(letter => {
+                    const btn = document.createElement('button');
+                    btn.textContent = letter;
+                    btn.style.padding = '15px';
+                    btn.style.fontSize = '1.5em';
+                    btn.style.fontWeight = 'bold';
+                    btn.onclick = () => clickLetter(letter, targetLetter);
+                    board.appendChild(btn);
+                });
+            }
+
+            function clickLetter(clicked, target) {
+                if (clicked === target) {
+                    game.foundLetters.push(clicked);
+                    document.getElementById('spelledWord').textContent = game.foundLetters.join('');
+                    showRandomLetter();
+                }
+            }
+
+            showRandomLetter();
+            game.letterInterval = setInterval(showRandomLetter, 3000);
+
+            game.alphabetTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(game.alphabetTimer);
+                    clearInterval(game.letterInterval);
+                    
+                    if (game.foundLetters.length >= 2) {
+                        answerQuestion('pathway_b', 10, `Multi-concept symbol use (spelled "${game.foundLetters.join('')}")`);
+                    } else {
+                        answerQuestion('pathway_a', 5, 'Single-concept communication (could not spell)');
+                    }
+                }
+            }, 1000);
+        }
+
+        function initializeTouchscreen() {
+            const targetsContainer = document.getElementById('targetsContainer');
+            let targetsHit = 0;
+            let timeLeft = 30;
+
+            // For characters who cannot use touchscreen, show black box (cannot interact)
+            const cannotUseCharacters = ['james', 'mia', 'kwame'];
+            if (cannotUseCharacters.includes(game.currentCharacter)) {
+                targetsContainer.innerHTML = '<div style="width: 100%; height: 100%; background: #333; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">Cannot access - involuntary movements / no arm control</div>';
+                
+                setTimeout(() => {
+                    answerQuestion('fail', 20, 'Cannot use touchscreen - needs specialist alternative access method');
+                }, 3000);
+                return;
+            }
+
+            // For other characters, show bouncing clickable targets with random positions
+            targetsContainer.style.position = 'relative';
+            
+            function createTarget() {
+                const target = document.createElement('div');
+                target.className = 'target-click';
+                target.style.position = 'absolute';
+                target.style.left = Math.random() * 85 + '%';
+                target.style.top = Math.random() * 70 + '%';
+                target.onclick = (e) => {
+                    e.stopPropagation();
+                    targetsHit++;
+                    document.getElementById('targetsHit').textContent = targetsHit;
+                    target.remove();
+                };
+                targetsContainer.appendChild(target);
+            }
+
+            // Create initial targets spread out
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createTarget, i * 200);
+            }
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+
+                // Add more targets randomly during the game
+                if (timeLeft % 5 === 0 && Math.random() > 0.4) {
+                    createTarget();
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    const points = targetsHit < 5 ? 20 : -30;
+                    const message = targetsHit < 5 ? 'Cannot reliably use touchscreen' : 'Can use touchscreen adequately';
+                    answerQuestion('touchscreen', points, message);
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            showQuestion();
+        }
+
+        function finishAssessment() {
+            game.assessmentComplete = true;
+            const character = game.characterData[game.currentCharacter];
+            const finalEligibility = Math.max(0, game.eligibility);
+            const percentage = Math.min(100, Math.round((finalEligibility / 100) * 100));
+            
+            // Check if "no support" was selected - automatic rejection
+            const noSupportAnswer = game.answers.find(a => a.answer === 'none');
+            const hasNoSupport = noSupportAnswer !== undefined;
+
+            let resultHtml = '';
+
+            if (percentage >= 100 && !hasNoSupport) {
+                resultHtml = `
+                    <div class="final-message">
+                        <h2>✓ SPECIALIST REFERRAL APPROVED</h2>
+                        <p><strong>${character.name}</strong> has been approved for specialist AAC assessment!</p>
+                        <p><strong>Final Eligibility Score: ${percentage}%</strong></p>
+                `;
+
+                if (game.currentCharacter === 'james') {
+                    resultHtml += `
+                        <div class="urgent-note">
+                            <strong>⚠️ URGENT CASE</strong><br>
+                            James receives specialist referral due to rapidly degenerative condition. However, funding delays mean equipment may not arrive before he loses physical access abilities. <strong>Time is critical.</strong>
+                        </div>
+                        <h4>Important Note: Even with approval, James faces:</h4>
+                        <ul>
+                            <li>Funding delays (6-18 months typical)</li>
+                            <li>Equipment procurement bureaucracy</li>
+                            <li>Training requirements</li>
+                            <li>Ongoing technical support gaps</li>
+                        </ul>
+                        <p><strong>Approval is just the first hurdle. The real barriers begin now.</strong></p>
+                    `;
+                } else if (game.currentCharacter === 'mia') {
+                    resultHtml += `
+                        <div class="urgent-note">
+                            <strong>✓ Strong Case</strong><br>
+                            Mia's combination of clear communication need, documented low-tech trials, and strong family support makes her a textbook specialist referral case. Early intervention is crucial for her development.
+                        </div>
+                    `;
+                } else if (game.currentCharacter === 'kwame') {
+                    resultHtml += `
+                        <div class="urgent-note">
+                            <strong>✓ Priority Case</strong><br>
+                            Kwame's broken equipment and documented prior successful AAC use qualify him as priority. Restoration of his communication access should be expedited given he already had a functioning system.
+                        </div>
+                    `;
+                }
+
+                resultHtml += `</div>`;
+            } else {
+                resultHtml = `
+                    <div class="final-message">
+                        <h2>✗ REFERRAL NOT APPROVED</h2>
+                        <p><strong>${character.name}</strong> has not met the threshold for specialist referral.</p>
+                        <p><strong>Final Eligibility Score: ${percentage}%</strong></p>
+                        ${hasNoSupport ? '<p style="background: #ffe6e6; padding: 15px; border-radius: 5px; margin: 15px 0; color: #CC0000;"><strong>⚠️ CRITICAL BARRIER: No support network = automatic rejection</strong><br>Even with good eligibility scores, lack of professional support or advocacy makes specialist AAC referral virtually impossible in the current system.</p>' : ''}
+                        <p style="background: #ffe6e6; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                            <strong>You fell through the cracks of the system.</strong>
+                        </p>
+                `;
+
+                if (game.currentCharacter === 'aisha') {
+                    resultHtml += `
+                        <h4>Why Aisha Was Rejected:</h4>
+                        <ul>
+                            <li><strong>Catch-22 Loop:</strong> Needs AAC to prove she understands AAC, but no one offers it</li>
+                            <li><strong>No Local Support:</strong> Local SLT has "gatekept" her, not offering any assessment</li>
+                            <li><strong>No Advocacy:</strong> Mother alone without professional support or training</li>
+                            <li><strong>System Failure:</strong> This represents institutional failure, not individual inadequacy</li>
+                        </ul>
+                    `;
+                } else if (game.currentCharacter === 'mrs_chen') {
+                    resultHtml += `
+                        <h4>Why Mrs. Chen Was Rejected:</h4>
+                        <ul>
+                            <li><strong>Language Barrier:</strong> No bilingual speech and language therapist available in area</li>
+                            <li><strong>Untrained Support:</strong> Son trying to help but not professionally trained</li>
+                            <li><strong>Cultural Mismatch:</strong> AAC options provided in English only (not Cantonese)</li>
+                            <li><strong>Systemic Discrimination:</strong> System not designed for non-English speakers</li>
+                        </ul>
+                    `;
+                } else if (game.currentCharacter === 'robert') {
+                    resultHtml += `
+                        <h4>Why Robert Was Rejected:</h4>
+                        <ul>
+                            <li><strong>Recovery Assumption:</strong> Too soon post-stroke - "Wait and see if speech returns"</li>
+                            <li><strong>No Prior Low-Tech Trials:</strong> Haven't documented why low-tech AAC isn't enough</li>
+                            <li><strong>Post-Discharge Gap:</strong> No SLT involvement post-hospital discharge</li>
+                        </ul>
+                    `;
+                }
+
+                resultHtml += `</div>`;
+            }
+
+            document.getElementById('finalEligibilityPercentage').textContent = `${percentage}%`;
+            document.getElementById('finalEligibilityBar').style.width = `${percentage}%`;
+
+            if (percentage >= 100) {
+                document.getElementById('finalEligibilityBar').style.background = 'linear-gradient(90deg, #00DD00 100%)';
+            } else if (percentage >= 60) {
+                document.getElementById('finalEligibilityBar').style.background = 'linear-gradient(90deg, #FFFF00 100%)';
+            } else {
+                document.getElementById('finalEligibilityBar').style.background = 'linear-gradient(90deg, #FF0000 100%)';
+            }
+
+            document.getElementById('resultsContent').innerHTML = resultHtml;
+
+            if (percentage >= 100) {
+                createConfetti();
+            }
+
+            showScreen('resultsScreen');
+        }
+
+        function updateEligibilityMeter() {
+            const maxEligibility = 150;
+            const percentage = Math.min(100, Math.round((game.eligibility / maxEligibility) * 100));
+            document.getElementById('eligibilityPercentage').textContent = `${percentage}%`;
+            document.getElementById('eligibilityBar').style.width = `${percentage}%`;
+
+            if (percentage >= 100) {
+                document.getElementById('eligibilityStatus').textContent = '✓ Eligible';
+                document.getElementById('eligibilityStatus').style.color = '#00DD00';
+            } else if (percentage >= 60) {
+                document.getElementById('eligibilityStatus').textContent = '⚠ Borderline';
+                document.getElementById('eligibilityStatus').style.color = '#FF9900';
+            } else {
+                document.getElementById('eligibilityStatus').textContent = '✗ Unlikely';
+                document.getElementById('eligibilityStatus').style.color = '#FF0000';
+            }
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = Math.random() > 0.5 ? '#FF00FF' : '#FFD700';
+                confetti.style.animation = `fall ${2 + Math.random() * 2}s linear forwards`;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                from {
+                    transform: translateY(-10vh) rotate(0deg);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
